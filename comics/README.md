@@ -1,32 +1,32 @@
-# Carpeta de Cómics
+# 🎨 Carpeta de Cómics
 
-Sube aquí los cómics de reuniones con la dirección.
+## Formato del archivo index.json
 
-## Formatos soportados
+```json
+[
+  {
+    "archivo": "2025-02-17_negociacion-convenio.html",
+    "titulo": "Negociación de Convenio - Edición Color",
+    "fecha": "2025-02-17",
+    "tipo": "html",
+    "descripcion": "La empresa responde CERO a todas las peticiones"
+  }
+]
+```
 
-- **`.png` / `.jpg`** — Imágenes estáticas (se muestran como miniatura y se pueden ampliar)
-- **`.html`** — Cómics interactivos generados con Claude (se abren en iframe)
+## Tipos soportados
 
-## Formato de nombre recomendado
+| Formato | Tipo | Visualización |
+|---------|------|---------------|
+| `.png` `.jpg` | `"imagen"` | Miniatura + lightbox |
+| `.html` | `"html"` | Iframe fullscreen |
+
+## Convención de nombres
 
 ```
-YYYY-MM-DD_titulo-del-comic.png
+YYYY-MM-DD_titulo-descriptivo.extension
 ```
 
 Ejemplos:
 - `2025-02-17_negociacion-convenio.html`
-- `2025-03-05_respuesta-empresa-cero.png`
-- `2026-01-20_reunion-enero.jpg`
-
-## Cómo actualizar la web
-
-**Después de subir un cómic**, edita el archivo `comics/index.json` y añade el nombre:
-
-```json
-[
-  "2025-02-17_negociacion-convenio.html",
-  "2025-03-05_respuesta-empresa-cero.png"
-]
-```
-
-Aparecerá automáticamente en la sección de Cómics con miniatura y botón de ampliar.
+- `2025-03-05_respuesta-cero.png`
