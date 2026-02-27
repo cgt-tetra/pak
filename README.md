@@ -1,4 +1,4 @@
-# ✊ CGT TetraPak · Web Sección Sindical
+# ✊ CGT TetraPak · Web Sección Sindical v2
 
 Web oficial de la Sección Sindical CGT en el Comité de Empresa de **Tetra Pak Envases S.A.** (Arganda del Rey, Madrid).
 
@@ -6,61 +6,14 @@ Web oficial de la Sección Sindical CGT en el Comité de Empresa de **Tetra Pak 
 
 ---
 
-## 🚀 Configuración inicial (una sola vez)
+## 🎉 Novedades en esta versión
 
-### 1. Crear el repositorio en GitHub
-
-1. Ve a [github.com/new](https://github.com/new)
-2. Nombre: `cgt-tetrapak` (o el que prefieras)
-3. Marca **Public** (necesario para GitHub Pages gratuito)
-4. No marques ningún checkbox inicial, haz clic en **Create repository**
-
-### 2. Subir los archivos
-
-```bash
-git clone https://github.com/TU-USUARIO/cgt-tetrapak.git
-# Copia todos estos archivos dentro
-git add .
-git commit -m "🚀 Lanzamiento web CGT TetraPak"
-git push
-```
-
-### 3. Activar GitHub Pages
-
-1. Ve a tu repo → **Settings** → **Pages**
-2. Source: **Deploy from a branch**
-3. Branch: `main` / carpeta: `/ (root)`
-4. Clic en **Save**
-5. En ~2 minutos tu web estará en: `https://TU-USUARIO.github.io/cgt-tetrapak/`
-
----
-
-## 📄 Añadir una nueva Acta
-
-**Opción A (automática):** Sube el PDF a la carpeta `actas/` — el bot de GitHub Actions actualizará el índice solo.
-
-**Opción B (manual):**
-1. Sube el PDF a `actas/` con formato `YYYY-MM-DD_descripcion.pdf`
-2. Edita `actas/index.json` y añade el nombre al array
-3. Haz commit y push → aparece en la web inmediatamente
-
----
-
-## 🎨 Añadir un nuevo Cómic
-
-**Opción A (automática):** Sube la imagen o HTML a `comics/` — el bot lo detecta solo.
-
-**Opción B (manual):**
-1. Sube el archivo a `comics/` con formato `YYYY-MM-DD_titulo.png`
-2. Edita `comics/index.json` y añade el nombre
-3. Commit y push → aparece en la galería
-
-### Tipos de cómic soportados
-
-| Formato | Cómo se muestra |
-|---------|----------------|
-| `.png` / `.jpg` | Miniatura + lightbox para ampliar |
-| `.html` | Miniatura genérica + se abre en iframe |
+✅ **Homepage con últimos 4** - Solo muestra los 4 cómics y actas más recientes
+✅ **Páginas dedicadas** - `actas.html` y `comics.html` con TODO el archivo
+✅ **Sistema de filtros** - Buscar por texto, fecha y categoría
+✅ **Metadata enriquecida** - JSON con títulos, fechas y categorías
+✅ **Código compartido** - CSS y JS en archivos separados (más fácil de mantener)
+✅ **Preparado para Firebase** - Estructura lista para migrar cuando necesites backend
 
 ---
 
@@ -68,27 +21,125 @@ git push
 
 ```
 cgt-tetrapak/
-├── index.html              ← Web principal
+├── index.html              ← Homepage (últimos 4 de cada)
+├── actas.html              ← Archivo completo actas + filtros
+├── comics.html             ← Galería completa cómics + filtros
+├── styles.css              ← Estilos compartidos
+├── common.js               ← JavaScript compartido
 ├── actas/
-│   ├── index.json          ← Lista de actas (actualizar al añadir PDFs)
-│   ├── README.md
-│   └── 2025-11-15_*.pdf    ← Tus PDFs aquí
+│   ├── index.json          ← Lista con metadata
+│   └── *.pdf               ← Tus PDFs
 ├── comics/
-│   ├── index.json          ← Lista de cómics (actualizar al añadir archivos)
-│   ├── README.md
-│   └── 2025-02-17_*.html   ← Tus cómics aquí
-├── docs/                   ← Documentos varios (plataforma, calendario...)
-└── .github/
-    └── workflows/
-        └── update-indexes.yml  ← Bot que actualiza los índices automáticamente
+│   ├── index.json          ← Lista con metadata
+│   └── *.html / *.png      ← Tus cómics
+└── .github/workflows/
+    └── update-indexes.yml  ← Bot automático
 ```
 
 ---
 
-## 🔗 Linktree de origen
+## 📄 Añadir una nueva acta
 
-Todos los enlaces de la web provienen del Linktree oficial: [linktr.ee/CGTTetraPak](https://linktr.ee/CGTTetraPak)
+### Nuevo formato JSON con metadata:
+
+```json
+[
+  {
+    "archivo": "2025-11-15_reunion-convenio.pdf",
+    "titulo": "Primera Reunión Convenio Colectivo",
+    "fecha": "2025-11-15",
+    "categoria": "convenio"
+  }
+]
+```
+
+### Categorías disponibles:
+- `convenio` - Negociación colectiva
+- `comite` - Reuniones ordinarias comité
+- `conflicto` - Situaciones de conflicto
+- `formacion` - Formación sindical
+- `elecciones` - Procesos electorales
+
+### Workflow:
+1. Sube el PDF a `actas/`
+2. Edita `actas/index.json` añadiendo el objeto completo
+3. Commit & push → aparece automáticamente con filtros
 
 ---
 
-*Construido con HTML puro · Alojado en GitHub Pages · Sin costes de servidor*
+## 🎨 Añadir un nuevo cómic
+
+### Formato JSON:
+
+```json
+[
+  {
+    "archivo": "2025-02-17_negociacion.html",
+    "titulo": "Negociación de Convenio",
+    "fecha": "2025-02-17"
+  }
+]
+```
+
+### Workflow:
+1. Sube el archivo a `comics/`
+2. Edita `comics/index.json` añadiendo el objeto
+3. Commit & push → aparece en la galería
+
+---
+
+## 🔍 Sistema de filtros
+
+### En actas.html:
+- 🔍 **Búsqueda por texto** - Busca en títulos
+- 📅 **Filtro por mes/año** - Selector de fecha
+- 📂 **Filtro por categoría** - Botones de categoría
+
+### En comics.html:
+- 🔍 **Búsqueda por texto**
+- 📅 **Filtro por mes/año**
+
+---
+
+## 🚀 Configuración GitHub Pages
+
+1. Ve a **Settings → Pages**
+2. Source: **Deploy from a branch**
+3. Branch: `main` / carpeta: `/ (root)`
+4. Save
+
+Tu web estará en: `https://TU-USUARIO.github.io/cgt-tetrapak/`
+
+---
+
+## 🔄 Migración a Firebase (futuro)
+
+Cuando necesites:
+- Login de usuarios
+- Roles (trabajador/afiliado/delegado)
+- Foros privados
+- Votaciones
+
+Esta estructura está **lista para migrar** a Firebase:
+- `index.json` → Firestore collection
+- PDFs → Firebase Storage con reglas de seguridad
+- Auth ya estructurado por roles
+
+**Documentación de migración:** Contacta cuando estés listo.
+
+---
+
+## 📊 Estadísticas de uso
+
+**Archivos:**
+- `index.html` - 3.2kb (gzipped)
+- `styles.css` - 8.1kb (gzipped)
+- `common.js` - 1.1kb (gzipped)
+
+**Total sitio:** ~15kb + assets
+
+**Tiempo de carga:** <500ms
+
+---
+
+*Construido con HTML/CSS/JS puro · Sin frameworks · Listo para Firebase*

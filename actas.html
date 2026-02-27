@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actas · CGT TetraPak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">✊ <span>CGT</span> TETRAPAK</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="actas.html" class="active">Actas</a></li>
+    <li><a href="comics.html">Cómics</a></li>
+  </ul>
+</nav>
+
+<section id="actas" style="padding-top: 120px;">
+  <div class="section-header reveal">
+    <p class="section-label">Archivo Completo</p>
+    <h2 class="section-title">TODAS LAS ACTAS<br>DE REUNIONES</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="filters reveal">
+    <div class="filter-group">
+      <label for="search">🔍 Buscar:</label>
+      <input type="text" id="search" placeholder="Título del acta...">
+    </div>
+
+    <div class="filter-group">
+      <label for="date-filter">📅 Fecha:</label>
+      <input type="month" id="date-filter">
+    </div>
+
+    <div class="filter-group" style="flex-direction: column; align-items: stretch; gap: 0.75rem;">
+      <label>📂 Categoría:</label>
+      <div class="category-filters">
+        <button class="category-filter-btn active" data-cat="todas">Todas</button>
+        <button class="category-filter-btn" data-cat="convenio">Convenio</button>
+        <button class="category-filter-btn" data-cat="comite">Comité</button>
+        <button class="category-filter-btn" data-cat="conflicto">Conflicto</button>
+        <button class="category-filter-btn" data-cat="formacion">Formación</button>
+        <button class="category-filter-btn" data-cat="elecciones">Elecciones</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="actas-count" style="font-family:'Courier Prime',monospace;font-size:0.75rem;color:#666;margin-bottom:1rem;text-align:center;"></div>
+
+  <div id="actas-container" class="reveal"></div>
+</section>
+
+<footer>
+  <p>✊ <strong>CGT Tetra Pak Envases S.A.</strong> · Sección Sindical · Arganda del Rey, Madrid</p>
+  <p style="margin-top:0.5rem;">
+    <a href="https://linktr.ee/CGTTetraPak" target="_blank">Linktree</a> ·
+    <a href="https://chat.whatsapp.com/I9oRl9Ud369EzwdWAlFabI" target="_blank">WhatsApp</a> ·
+    <a href="https://cgt.org.es" target="_blank">CGT Nacional</a>
+  </p>
+  <p style="margin-top:1rem; color:#222;">Defendiendo tus derechos</p>
+</footer>
+
+<script src="common.js"></script>
+<script>
+let allActas = [];
+let filteredActas = [];
+
+async function loadAllActas() {
+  const container = document.getElementById('actas-container');
+  try {
+    const res = await fetch('actas/index.json');
+    if (!res.ok) throw new Error('no index');
+    let data = await res.json();
+    
+    if (data.length && typeof data[0] === 'string') {
+      data = data.map(f => ({ archivo: f, titulo: '', fecha: '', categoria: '' }));
+    }
+    
+    allActas = data
+      .map(item => ({...item, ...formatFileName(item.archivo)}))
+      .sort((a,b) => b.dateSort.localeCompare(a.dateSort));
+
+    filteredActas = [...allActas];
+    renderActas();
+
+  } catch(e) {
+    container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#555;padding:4rem;">No hay actas disponibles</p>`;
+  }
+}
+
+function renderActas() {
+  const container = document.getElementById('actas-container');
+  const count = document.getElementById('actas-count');
+
+  count.textContent = `Mostrando ${filteredActas.length} de ${allActas.length} actas`;
+
+  if (!filteredActas.length) {
+    container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#555;padding:4rem;">No se encontraron actas con estos filtros</p>`;
+    return;
+  }
+
+  container.innerHTML = filteredActas.map(item => {
+    const displayTitle = item.titulo || item.title;
+    const catBadge = item.categoria 
+      ? `<span class="category-badge" style="margin-left:0.5rem;">${item.categoria}</span>`
+      : '';
+    return `
+      <a href="actas/${item.archivo}" target="_blank" class="acta-card">
+        <div class="acta-icon">📄</div>
+        <div class="acta-info">
+          <div class="acta-nombre">${displayTitle}</div>
+          <div class="acta-meta">${item.date}${catBadge}</div>
+        </div>
+        <div class="acta-badge">PDF</div>
+      </a>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  const dateFilter = document.getElementById('date-filter').value; // YYYY-MM
+  const activeCategory = document.querySelector('.category-filter-btn.active').dataset.cat;
+
+  filteredActas = allActas.filter(item => {
+    // Search filter
+    const titleMatch = (item.titulo || item.title).toLowerCase().includes(searchTerm);
+    if (!titleMatch) return false;
+
+    // Date filter
+    if (dateFilter) {
+      const itemYYYYMM = item.dateSort ? item.dateSort.substring(0,6) : '';
+      const filterYYYYMM = dateFilter.replace('-','');
+      if (itemYYYYMM !== filterYYYYMM) return false;
+    }
+
+    // Category filter
+    if (activeCategory !== 'todas') {
+      if (item.categoria !== activeCategory) return false;
+    }
+
+    return true;
+  });
+
+  renderActas();
+}
+
+// Event listeners
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('date-filter').addEventListener('change', applyFilters);
+
+document.querySelectorAll('.category-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.category-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
+});
+
+loadAllActas();
+</script>
+
+</body>
+</html>

@@ -5,756 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CGT TetraPak · Sección Sindical</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✊</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --rojo: #CC0000;
-  --rojo-oscuro: #8B0000;
-  --rojo-vivo: #FF1A1A;
-  --negro: #0D0D0D;
-  --gris-oscuro: #1A1A1A;
-  --gris-medio: #2E2E2E;
-  --gris-panel: #F2F0EB;
-  --crema: #FAF7F2;
-  --amarillo: #FFD600;
-  --blanco: #FFFFFF;
-  --texto: #1A1A1A;
-  --sombra: rgba(0,0,0,0.4);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--negro);
-  color: var(--crema);
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 300;
-  overflow-x: hidden;
-}
-
-/* ─── NOISE TEXTURE OVERLAY ─── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.5;
-}
-
-/* ─── NAVIGATION ─── */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(13,13,13,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 2px solid var(--rojo);
-  z-index: 900;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-}
-
-.nav-logo {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--rojo);
-  letter-spacing: 2px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nav-logo span { color: var(--crema); }
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 0;
-}
-
-.nav-links a {
-  color: #aaa;
-  text-decoration: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 0 1rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s;
-}
-
-.nav-links a:hover, .nav-links a.active {
-  color: var(--crema);
-  border-bottom-color: var(--rojo);
-}
-
-/* ─── HERO ─── */
-#hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding-top: 60px;
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(204,0,0,0.12) 0%, transparent 70%),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 40px,
-      rgba(204,0,0,0.03) 40px,
-      rgba(204,0,0,0.03) 41px
-    );
-}
-
-.hero-grid-lines {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(204,0,0,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(204,0,0,0.08) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem;
-  max-width: 900px;
-}
-
-.hero-eyebrow {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 4px;
-  color: var(--rojo);
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.2s forwards;
-}
-
-.hero-fist {
-  font-size: 5rem;
-  line-height: 1;
-  margin-bottom: 1.5rem;
-  display: block;
-  opacity: 0;
-  animation: fadeUp 0.7s 0.3s forwards;
-}
-
-.hero-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 700;
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  line-height: 0.92;
-  letter-spacing: -1px;
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeUp 0.7s 0.4s forwards;
-}
-
-.hero-title .cgt { color: var(--rojo); display: block; }
-.hero-title .empresa { color: var(--crema); display: block; font-size: 0.7em; }
-.hero-title .sub { color: #666; display: block; font-size: 0.35em; font-family: 'Courier Prime', monospace; letter-spacing: 6px; margin-top: 0.5rem; font-weight: 400; }
-
-.hero-tagline {
-  font-size: 1.1rem;
-  color: #888;
-  font-style: italic;
-  margin: 2rem 0 3rem;
-  opacity: 0;
-  animation: fadeUp 0.7s 0.5s forwards;
-}
-
-.hero-tagline strong { color: var(--crema); font-style: normal; }
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  opacity: 0;
-  animation: fadeUp 0.7s 0.6s forwards;
-}
-
-.btn {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 0.85rem 2rem;
-  text-decoration: none;
-  transition: all 0.25s;
-  cursor: pointer;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-primary {
-  background: var(--rojo);
-  color: white;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.btn-primary:hover { background: var(--rojo-vivo); transform: translateY(-2px); }
-
-.btn-outline {
-  background: transparent;
-  color: var(--crema);
-  border: 1.5px solid #444;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.btn-outline:hover { border-color: var(--crema); transform: translateY(-2px); }
-
-/* ─── SECTION BASE ─── */
-section {
-  padding: 6rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-header {
-  margin-bottom: 3.5rem;
-  position: relative;
-}
-
-.section-label {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 4px;
-  color: var(--rojo);
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.section-label::before {
-  content: '';
-  display: inline-block;
-  width: 30px;
-  height: 2px;
-  background: var(--rojo);
-}
-
-.section-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1;
-  color: var(--crema);
-}
-
-.section-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, var(--rojo), transparent);
-  margin: 1.5rem 0 0;
-}
-
-/* ─── LINKS SECTION ─── */
-#enlaces {
-  background: var(--gris-oscuro);
-  max-width: 100%;
-  padding: 6rem 0;
-}
-
-#enlaces > .inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5px;
-  margin-top: 3rem;
-  background: #333;
-  border: 1.5px solid #333;
-}
-
-.link-card {
-  background: var(--gris-oscuro);
-  padding: 1.75rem;
-  text-decoration: none;
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-}
-
-.link-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--rojo);
-  transform: scaleY(0);
-  transition: transform 0.25s;
-}
-
-.link-card:hover { background: #252525; }
-.link-card:hover::before { transform: scaleY(1); }
-
-.link-icon {
-  font-size: 1.8rem;
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(204,0,0,0.1);
-  border: 1px solid rgba(204,0,0,0.2);
-}
-
-.link-card-body { flex: 1; min-width: 0; }
-
-.link-card-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--crema);
-  margin-bottom: 0.35rem;
-  letter-spacing: 0.5px;
-}
-
-.link-card-desc {
-  font-size: 0.8rem;
-  color: #666;
-  font-family: 'Courier Prime', monospace;
-  line-height: 1.5;
-}
-
-.link-card-arrow {
-  color: var(--rojo);
-  font-size: 1.1rem;
-  opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
-  align-self: center;
-}
-.link-card:hover .link-card-arrow { opacity: 1; transform: translateX(4px); }
-
-/* WhatsApp special */
-.link-card.whatsapp:hover { background: rgba(37,211,102,0.06); }
-.link-card.whatsapp::before { background: #25D366; }
-.link-card.whatsapp .link-icon { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.2); }
-
-/* ─── ACTAS SECTION ─── */
-#actas {
-  background: var(--negro);
-}
-
-.actas-intro {
-  background: rgba(204,0,0,0.05);
-  border: 1px solid rgba(204,0,0,0.15);
-  border-left: 3px solid var(--rojo);
-  padding: 1.25rem 1.5rem;
-  font-size: 0.85rem;
-  color: #888;
-  font-family: 'Courier Prime', monospace;
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-}
-
-.actas-intro strong { color: var(--crema); }
-.actas-intro code {
-  background: rgba(255,255,255,0.06);
-  padding: 1px 6px;
-  border-radius: 3px;
-  color: var(--amarillo);
-}
-
-#actas-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.acta-card {
-  background: var(--gris-oscuro);
-  border: 1px solid #2a2a2a;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-decoration: none;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.acta-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(204,0,0,0.05), transparent);
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
-.acta-card:hover { border-color: rgba(204,0,0,0.4); transform: translateX(4px); }
-.acta-card:hover::after { opacity: 1; }
-
-.acta-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
-.acta-info { flex: 1; min-width: 0; }
-
-.acta-nombre {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.95rem;
-  color: var(--crema);
-  margin-bottom: 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.acta-meta {
-  font-size: 0.72rem;
-  color: #555;
-  font-family: 'Courier Prime', monospace;
-}
-
-.acta-badge {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.65rem;
-  background: rgba(204,0,0,0.15);
-  color: var(--rojo);
-  padding: 2px 8px;
-  border-radius: 2px;
-  border: 1px solid rgba(204,0,0,0.2);
-  white-space: nowrap;
-}
-
-.actas-empty {
-  grid-column: 1/-1;
-  text-align: center;
-  padding: 4rem;
-  color: #444;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.85rem;
-  border: 1px dashed #2a2a2a;
-}
-
-.actas-empty .empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.3; }
-
-/* ─── COMICS SECTION ─── */
-#comics {
-  background: var(--gris-oscuro);
-  max-width: 100%;
-  padding: 6rem 0;
-}
-
-#comics > .inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.comics-intro {
-  background: rgba(255,214,0,0.04);
-  border: 1px solid rgba(255,214,0,0.12);
-  border-left: 3px solid var(--amarillo);
-  padding: 1.25rem 1.5rem;
-  font-size: 0.85rem;
-  color: #888;
-  font-family: 'Courier Prime', monospace;
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-}
-
-.comics-intro strong { color: var(--crema); }
-.comics-intro code {
-  background: rgba(255,255,255,0.06);
-  padding: 1px 6px;
-  border-radius: 3px;
-  color: var(--amarillo);
-}
-
-#comics-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.comic-card {
-  background: var(--negro);
-  border: 1px solid #222;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.comic-card:hover { border-color: rgba(255,214,0,0.4); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-
-.comic-thumb {
-  width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  display: block;
-  background: #111;
-  position: relative;
-}
-
-.comic-thumb-placeholder {
-  width: 100%;
-  aspect-ratio: 4/3;
-  background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.comic-thumb-placeholder::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,214,0,0.02) 10px, rgba(255,214,0,0.02) 11px);
-}
-
-.comic-thumb-placeholder .ph-icon { font-size: 3rem; opacity: 0.4; }
-.comic-thumb-placeholder .ph-label { font-family: 'Courier Prime', monospace; font-size: 0.7rem; color: #444; letter-spacing: 2px; }
-
-.comic-card-body { padding: 1.25rem; }
-
-.comic-tag {
-  display: inline-block;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 2px;
-  background: rgba(255,214,0,0.1);
-  color: var(--amarillo);
-  padding: 2px 8px;
-  margin-bottom: 0.6rem;
-  border: 1px solid rgba(255,214,0,0.15);
-}
-
-.comic-card-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  color: var(--crema);
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-}
-
-.comic-card-meta {
-  font-size: 0.72rem;
-  color: #555;
-  font-family: 'Courier Prime', monospace;
-}
-
-.comic-expand-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0,0,0,0.7);
-  color: var(--amarillo);
-  border: 1px solid rgba(255,214,0,0.3);
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-  cursor: pointer;
-}
-
-.comic-card:hover .comic-expand-btn { opacity: 1; }
-
-/* ─── MODAL ─── */
-#modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-#modal-overlay.open { display: flex; }
-
-#modal-box {
-  max-width: 90vw;
-  max-height: 90vh;
-  position: relative;
-}
-
-#modal-box img {
-  max-width: 100%;
-  max-height: 85vh;
-  display: block;
-  object-fit: contain;
-}
-
-#modal-close {
-  position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: var(--rojo);
-  color: white;
-  border: none;
-  width: 44px;
-  height: 44px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Oswald', sans-serif;
-  transition: background 0.2s;
-}
-#modal-close:hover { background: var(--rojo-vivo); }
-
-/* ─── FOOTER ─── */
-footer {
-  background: var(--negro);
-  border-top: 1px solid #1a1a1a;
-  padding: 3rem 2rem;
-  text-align: center;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem;
-  color: #333;
-  line-height: 2;
-}
-
-footer strong { color: var(--rojo); }
-footer a { color: #555; text-decoration: none; }
-footer a:hover { color: var(--crema); }
-
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s, transform 0.6s;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-/* ─── TICKER ─── */
-.ticker-wrap {
-  background: var(--rojo);
-  padding: 0.6rem 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.ticker-inner {
-  display: inline-flex;
-  animation: ticker 30s linear infinite;
-}
-
-.ticker-item {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  color: white;
-  padding: 0 3rem;
-}
-
-.ticker-item::before { content: '✊ '; }
-
-@keyframes ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* ─── SCROLL INDICATOR ─── */
-.scroll-down {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: #444;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  animation: fadeUp 1s 1s forwards;
-  opacity: 0;
-}
-
-.scroll-down-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--rojo), transparent);
-  animation: scrollLine 1.5s ease-in-out infinite;
-}
-
-@keyframes scrollLine {
-  0%, 100% { transform: scaleY(1); opacity: 1; }
-  50% { transform: scaleY(0.5); opacity: 0.4; }
-}
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .hero-actions { flex-direction: column; align-items: center; }
-  .links-grid { grid-template-columns: 1fr; }
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">✊ <span>CGT</span> TETRAPAK</a>
+  <a href="index.html" class="nav-logo">✊ <span>CGT</span> TETRAPAK</a>
   <ul class="nav-links">
-    <li><a href="#enlaces">Enlaces</a></li>
-    <li><a href="#actas">Actas</a></li>
-    <li><a href="#comics">Cómics</a></li>
+    <li><a href="index.html" class="active">Inicio</a></li>
+    <li><a href="actas.html">Actas</a></li>
+    <li><a href="comics.html">Cómics</a></li>
   </ul>
 </nav>
 
@@ -775,11 +37,11 @@ footer a:hover { color: var(--crema); }
       <a href="https://chat.whatsapp.com/I9oRl9Ud369EzwdWAlFabI" target="_blank" class="btn btn-primary">
         💬 Únete al WhatsApp
       </a>
-      <a href="#actas" class="btn btn-outline">
+      <a href="actas.html" class="btn btn-outline">
         📄 Ver Actas
       </a>
-      <a href="#enlaces" class="btn btn-outline">
-        🔗 Enlaces útiles
+      <a href="comics.html" class="btn btn-outline">
+        🎨 Ver Cómics
       </a>
     </div>
   </div>
@@ -817,8 +79,6 @@ footer a:hover { color: var(--crema); }
     </div>
 
     <div class="links-grid reveal">
-
-      <!-- WhatsApp -->
       <a href="https://chat.whatsapp.com/I9oRl9Ud369EzwdWAlFabI" target="_blank" class="link-card whatsapp">
         <div class="link-icon">💬</div>
         <div class="link-card-body">
@@ -828,116 +88,82 @@ footer a:hover { color: var(--crema); }
         <div class="link-card-arrow">→</div>
       </a>
 
-      <!-- Plataforma Convenio (documento - abre modal info) -->
-      <div class="link-card" onclick="showDocInfo('plataforma')" style="cursor:pointer">
-        <div class="link-icon">📋</div>
-        <div class="link-card-body">
-          <div class="link-card-title">Plataforma Convenio</div>
-          <div class="link-card-desc">Documento · Propuestas CGT</div>
-        </div>
-        <div class="link-card-arrow">→</div>
-      </div>
-
-      <!-- Convenio BOCM -->
       <a href="https://www.bocm.es/bocm-20250927-1" target="_blank" class="link-card">
         <div class="link-icon">📰</div>
         <div class="link-card-body">
           <div class="link-card-title">Convenio BOCM</div>
-          <div class="link-card-desc">Tetra Pak Envases S.A. · Cód. 28003982011981</div>
+          <div class="link-card-desc">Tetra Pak Envases S.A.</div>
         </div>
         <div class="link-card-arrow">→</div>
       </a>
 
-      <!-- Calendario 2026 -->
-      <div class="link-card" onclick="showDocInfo('calendario')" style="cursor:pointer">
-        <div class="link-icon">📅</div>
-        <div class="link-card-body">
-          <div class="link-card-title">Calendario Laboral 2026</div>
-          <div class="link-card-desc">Documento · Festivos y jornada</div>
-        </div>
-        <div class="link-card-arrow">→</div>
-      </div>
-
-      <!-- Comité Tetrapak -->
       <a href="https://linktr.ee/comiteTetraPak" target="_blank" class="link-card">
         <div class="link-icon">🏭</div>
         <div class="link-card-body">
           <div class="link-card-title">Comité de Tetra Pak</div>
-          <div class="link-card-desc">Protegiendo lo bueno · Linktree oficial</div>
+          <div class="link-card-desc">Protegiendo lo bueno</div>
         </div>
         <div class="link-card-arrow">→</div>
       </a>
 
-      <!-- Acceso Nómina -->
       <a href="https://sso.tetrapak.com/idp/startSSO.ping?PartnerSpId=ssomanager.neeyamo.com%2Fsaml%2FSSO%2Falias%2FNeosuitetetrapak_TetraPak" target="_blank" class="link-card">
         <div class="link-icon">💰</div>
         <div class="link-card-body">
           <div class="link-card-title">Acceso a Nómina</div>
-          <div class="link-card-desc">SSO Tetra Pak · Portal Neeyamo</div>
+          <div class="link-card-desc">Portal Neeyamo</div>
         </div>
         <div class="link-card-arrow">→</div>
       </a>
 
-      <!-- tetrapakparati -->
       <a href="https://tetrapakparati.com" target="_blank" class="link-card">
         <div class="link-icon">🌐</div>
         <div class="link-card-body">
           <div class="link-card-title">tetrapakparati.com</div>
-          <div class="link-card-desc">Portal interno de empleados</div>
+          <div class="link-card-desc">Portal empleados</div>
         </div>
         <div class="link-card-arrow">→</div>
       </a>
 
-      <!-- CGT Nacional -->
       <a href="https://cgt.org.es" target="_blank" class="link-card">
         <div class="link-icon">✊</div>
         <div class="link-card-body">
           <div class="link-card-title">CGT Nacional</div>
-          <div class="link-card-desc">Confederación General del Trabajo</div>
+          <div class="link-card-desc">Confederación General</div>
         </div>
         <div class="link-card-arrow">→</div>
       </a>
-
     </div>
   </div>
 </div>
 
-<!-- ACTAS -->
+<!-- ACTAS PREVIEW -->
 <section id="actas">
   <div class="section-header reveal">
-    <p class="section-label">Transparencia</p>
+    <p class="section-label">Últimas</p>
     <h2 class="section-title">ACTAS DE<br>REUNIONES</h2>
     <div class="section-divider"></div>
   </div>
 
-<!--  <div class="actas-intro reveal">
-    📁 <strong>Cómo añadir actas:</strong> Sube archivos PDF a la carpeta <code>actas/</code> del repositorio.<br>
-    El nombre del archivo se mostrará como título. Formato recomendado: <code>YYYY-MM-DD_descripcion.pdf</code><br>
-    Ejemplo: <code>2025-11-15_reunion-convenio.pdf</code> → se muestra automáticamente en esta sección.
-  </div> -->
+  <div id="actas-container" class="reveal"></div>
 
-  <div id="actas-container" class="reveal">
-    <!-- Se rellena con JS leyendo el archivo actas/index.json -->
+  <div class="section-actions">
+    <a href="actas.html" class="btn btn-outline">📄 Ver todas las actas →</a>
   </div>
 </section>
 
-<!-- COMICS -->
+<!-- COMICS PREVIEW -->
 <div id="comics">
   <div class="inner">
     <div class="section-header reveal">
-      <p class="section-label">Humor & Realidad</p>
+      <p class="section-label">Últimos</p>
       <h2 class="section-title">CÓMICS DE<br>REUNIONES</h2>
       <div class="section-divider"></div>
     </div>
 
-  <!--    <div class="comics-intro reveal">
-    🎨 <strong>Cómo añadir cómics:</strong> Sube imágenes a la carpeta <code>comics/</code> del repositorio.<br>
-      Formatos soportados: <code>.png</code> <code>.jpg</code> <code>.html</code>. Formato recomendado: <code>YYYY-MM-DD_titulo.png</code><br>
-      Ejemplo: <code>2025-01-20_negociacion-convenio.png</code> → aparece automáticamente aquí.
-    </div> -->
+    <div id="comics-container" class="reveal"></div>
 
-    <div id="comics-container" class="reveal">
-      <!-- Se rellena con JS -->
+    <div class="section-actions">
+      <a href="comics.html" class="btn btn-outline">🎨 Ver todos los cómics →</a>
     </div>
   </div>
 </div>
@@ -950,10 +176,9 @@ footer a:hover { color: var(--crema); }
     <a href="https://chat.whatsapp.com/I9oRl9Ud369EzwdWAlFabI" target="_blank">WhatsApp</a> ·
     <a href="https://cgt.org.es" target="_blank">CGT Nacional</a>
   </p>
-  <p style="margin-top:1rem; color:#222;">Defendiendo tus derechos · Construido con GitHub Pages</p>
+  <p style="margin-top:1rem; color:#222;">Defendiendo tus derechos</p>
 </footer>
 
-<!-- MODAL LIGHTBOX -->
 <div id="modal-overlay" onclick="closeModal(event)">
   <div id="modal-box">
     <img id="modal-img" src="" alt="">
@@ -962,177 +187,92 @@ footer a:hover { color: var(--crema); }
   <button id="modal-close" onclick="closeModalDirect()">✕</button>
 </div>
 
-<!-- DOC INFO MODAL -->
-<div id="doc-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9998; align-items:center; justify-content:center; padding:2rem;">
-  <div style="background:#1a1a1a; border:1px solid #333; border-top:3px solid #CC0000; padding:2rem; max-width:500px; width:100%; position:relative;">
-    <button onclick="document.getElementById('doc-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;">✕</button>
-    <h3 id="doc-modal-title" style="font-family:'Oswald',sans-serif;color:#FAF7F2;font-size:1.3rem;margin-bottom:1rem;"></h3>
-    <p id="doc-modal-body" style="font-family:'Courier Prime',monospace;font-size:0.8rem;color:#888;line-height:1.8;"></p>
-    <p style="margin-top:1.5rem;font-family:'Courier Prime',monospace;font-size:0.75rem;color:#444;">
-      💡 Para añadir este documento: súbelo a la carpeta correspondiente en GitHub.<br>
-      Nombre sugerido en la raíz del repo o en <code style="color:#FFD600;">docs/</code>
-    </p>
-  </div>
-</div>
-
+<script src="common.js"></script>
 <script>
-// ─── REVEAL ON SCROLL ───
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ─── NAV ACTIVE LINK ───
-const sections = document.querySelectorAll('section, [id]');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  document.querySelectorAll('#hero,#enlaces,#actas,#comics').forEach(s => {
-    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
-  });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
-  });
-});
-
-// ─── MODAL ───
-function openModal(src, isHtml = false) {
-  const overlay = document.getElementById('modal-overlay');
-  const img = document.getElementById('modal-img');
-  const htmlC = document.getElementById('modal-html-container');
-  if (isHtml) {
-    img.style.display = 'none';
-    htmlC.style.display = 'block';
-    htmlC.innerHTML = `<iframe src="${src}" style="width:90vw;height:85vh;border:none;"></iframe>`;
-  } else {
-    img.style.display = 'block';
-    htmlC.style.display = 'none';
-    img.src = src;
-  }
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
-}
-
-function closeModalDirect() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.getElementById('modal-img').src = '';
-  document.getElementById('modal-html-container').innerHTML = '';
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
-
-// ─── DOC INFO MODAL ───
-function showDocInfo(type) {
-  const titles = {
-    plataforma: '📋 Plataforma Convenio',
-    calendario: '📅 Calendario Laboral 2026'
-  };
-  const bodies = {
-    plataforma: 'Documento con las propuestas de la sección sindical CGT para la negociación del convenio colectivo de Tetra Pak Envases S.A.\n\nPara añadirlo a la web, sube el PDF a la carpeta docs/ con el nombre:\ndocs/plataforma-convenio.pdf',
-    calendario: 'Calendario laboral oficial 2026 con festivos nacionales, de la Comunidad de Madrid y locales de Arganda del Rey.\n\nPara añadirlo, sube el PDF a:\ndocs/calendario-2026.pdf'
-  };
-  document.getElementById('doc-modal-title').textContent = titles[type];
-  document.getElementById('doc-modal-body').textContent = bodies[type];
-  document.getElementById('doc-modal').style.display = 'flex';
-}
-
-// ─── FORMATEAR NOMBRE DE ARCHIVO ───
-function formatFileName(name) {
-  // Quitar extensión
-  let clean = name.replace(/\.[^/.]+$/, '');
-  // Intentar extraer fecha YYYY-MM-DD
-  const dateMatch = clean.match(/^(\d{4})-(\d{2})-(\d{2})[-_\s]?(.*)/);
-  if (dateMatch) {
-    const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    const date = `${parseInt(dateMatch[3])} ${months[parseInt(dateMatch[2])-1]} ${dateMatch[1]}`;
-    const title = dateMatch[4].replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    return { date, title: title || 'Acta' };
-  }
-  return { date: '', title: clean.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) };
-}
-
-// ─── CARGAR ACTAS ───
-// Lee actas/index.json - generado por GitHub Actions o manualmente
-async function loadActas() {
+async function loadActasPreview() {
   const container = document.getElementById('actas-container');
   try {
     const res = await fetch('actas/index.json');
     if (!res.ok) throw new Error('no index');
-    const files = await res.json(); // array de strings con nombres de archivos
+    let data = await res.json();
+    
+    if (data.length && typeof data[0] === 'string') {
+      data = data.map(f => ({ archivo: f, titulo: '', fecha: '', categoria: '' }));
+    }
+    
+    data = data
+      .map(item => ({...item, ...formatFileName(item.archivo)}))
+      .sort((a,b) => b.dateSort.localeCompare(a.dateSort))
+      .slice(0, 4);
 
-    if (!files.length) throw new Error('empty');
+    if (!data.length) throw new Error('empty');
 
-    container.innerHTML = files.map(f => {
-      const { date, title } = formatFileName(f);
+    container.innerHTML = data.map(item => {
+      const displayTitle = item.titulo || item.title;
+      const cat = item.categoria ? ` · ${item.categoria}` : '';
       return `
-        <a href="actas/${f}" target="_blank" class="acta-card">
+        <a href="actas/${item.archivo}" target="_blank" class="acta-card">
           <div class="acta-icon">📄</div>
           <div class="acta-info">
-            <div class="acta-nombre">${title}</div>
-            <div class="acta-meta">${date}</div>
+            <div class="acta-nombre">${displayTitle}</div>
+            <div class="acta-meta">${item.date}${cat}</div>
           </div>
           <div class="acta-badge">PDF</div>
         </a>`;
     }).join('');
 
   } catch(e) {
-    container.innerHTML = `
-      <div class="actas-empty">
-        <span class="empty-icon">📂</span>
-        No hay actas publicadas todavía.<br>
-        Sube archivos PDF a la carpeta <code style="color:#FFD600">actas/</code> y actualiza <code style="color:#FFD600">actas/index.json</code>
-      </div>`;
+    container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#555;">No hay actas disponibles</p>`;
   }
 }
 
-// ─── CARGAR CÓMICS ───
-async function loadComics() {
+async function loadComicsPreview() {
   const container = document.getElementById('comics-container');
   try {
     const res = await fetch('comics/index.json');
     if (!res.ok) throw new Error('no index');
-    const files = await res.json(); // array de strings
+    let data = await res.json();
 
-    if (!files.length) throw new Error('empty');
+    if (data.length && typeof data[0] === 'string') {
+      data = data.map(f => ({ archivo: f, titulo: '', fecha: '' }));
+    }
 
-    container.innerHTML = files.map(f => {
-      const { date, title } = formatFileName(f);
-      const isHtml = f.endsWith('.html');
-      const isImg = /\.(png|jpg|jpeg|gif|webp)$/i.test(f);
+    data = data
+      .map(item => ({...item, ...formatFileName(item.archivo)}))
+      .sort((a,b) => b.dateSort.localeCompare(a.dateSort))
+      .slice(0, 4);
+
+    if (!data.length) throw new Error('empty');
+
+    container.innerHTML = data.map(item => {
+      const displayTitle = item.titulo || item.title;
+      const isHtml = item.archivo.endsWith('.html');
+      const isImg = /\.(png|jpg|jpeg|gif|webp)$/i.test(item.archivo);
       const tag = isHtml ? 'HTML' : 'IMAGEN';
 
       const thumb = isImg
-        ? `<img class="comic-thumb" src="comics/${f}" alt="${title}" loading="lazy">`
+        ? `<img class="comic-thumb" src="comics/${item.archivo}" alt="${displayTitle}" loading="lazy">`
         : `<div class="comic-thumb-placeholder"><span class="ph-icon">🎨</span><span class="ph-label">CÓMIC ${tag}</span></div>`;
 
       return `
-        <div class="comic-card" onclick="${isHtml ? `openModal('comics/${f}', true)` : `openModal('comics/${f}')`}">
+        <div class="comic-card" onclick="${isHtml ? `openModal('comics/${item.archivo}', true)` : `openModal('comics/${item.archivo}')`}">
           ${thumb}
           <div class="comic-expand-btn">⛶</div>
           <div class="comic-card-body">
             <div class="comic-tag">${tag}</div>
-            <div class="comic-card-title">${title}</div>
-            <div class="comic-card-meta">${date}</div>
+            <div class="comic-card-title">${displayTitle}</div>
+            <div class="comic-card-meta">${item.date}</div>
           </div>
         </div>`;
     }).join('');
 
   } catch(e) {
-    container.innerHTML = `
-      <div class="actas-empty">
-        <span class="empty-icon">🎨</span>
-        Aún no hay cómics publicados.<br>
-        Sube imágenes o HTML a la carpeta <code style="color:#FFD600">comics/</code> y actualiza <code style="color:#FFD600">comics/index.json</code>
-      </div>`;
+    container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#555;">No hay cómics disponibles</p>`;
   }
 }
 
-loadActas();
-loadComics();
+loadActasPreview();
+loadComicsPreview();
 </script>
 
 </body>
